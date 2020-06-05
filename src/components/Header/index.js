@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header() {
+export default function Header(props) {
   const classes = useStyles();
 
   return (
@@ -101,6 +101,7 @@ export default function Header() {
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              onChange={props.onChangeHandler}
             />
           </div>
           <Button
