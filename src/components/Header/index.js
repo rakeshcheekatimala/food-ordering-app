@@ -8,6 +8,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
+import ProfileDropdown from './../Dropdown';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -76,6 +77,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header(props) {
   const classes = useStyles();
+  const history = props.history;
+  let isLoggedIn = props.isUserLoggedIn;
 
   return (
     <div className={classes.grow}>
@@ -104,14 +107,18 @@ export default function Header(props) {
               onChange={props.onChangeHandler}
             />
           </div>
-          <Button
-            variant="contained"
-            className={classes.button}
-            startIcon={<AccountCircleIcon />}
-            onClick={props.onLoginClickHandler}
-          >
-            Login
-          </Button>
+          {isLoggedIn ? (
+            <ProfileDropdown history={history} userLogout={props.userLogout} />
+          ) : (
+            <Button
+              variant="contained"
+              className={classes.button}
+              startIcon={<AccountCircleIcon />}
+              onClick={props.onLoginClickHandler}
+            >
+              Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </div>
