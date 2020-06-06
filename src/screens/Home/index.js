@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, RestaurantCard } from './../../components';
+import { Header, RestaurantCard, MessageSnackbar } from './../../components';
 import {
   filterRestaurantsByName,
   getAllRestaurants,
@@ -8,6 +8,7 @@ import {
 } from './../../api';
 import { isValidContact, isValidPassword } from './../../common/utils';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { userLogout } from './../../common/utils';
 
 import {
   Grid,
@@ -72,7 +73,7 @@ class Home extends Component {
       contactRequired: 'dispNone',
       contact: '',
       registrationSuccess: false,
-      loggedIn: sessionStorage.getItem('access-token') == null ? false : true,
+      loggedIn: sessionStorage.getItem('access-token') ? true : false,
       loginApiErrors: {
         status: false,
         errors: {
@@ -87,6 +88,7 @@ class Home extends Component {
         },
       },
       isLoading: true,
+      isUserLoggedIn: false,
     };
   }
 
@@ -212,7 +214,8 @@ class Home extends Component {
       }
 
       if (result.headers && result.headers['access-token']) {
-        sessionStorage.setItem('acccess-token', result.headers['access-token']);
+        sessionStorage.setItem('access-token', result.headers['access-token']);
+        this.setState({ isUserLoggedIn: true, modalIsOpen: false });
       }
     }
   };
@@ -223,6 +226,13 @@ class Home extends Component {
 
   inputLoginPasswordChangeHandler = (e) => {
     this.setState({ loginPassword: e.target.value });
+  };
+
+  userLogout = () => {
+    this.setState({
+      isUserLoggedIn: false,
+    });
+    userLogout();
   };
 
   registerClickHandler = () => {
@@ -332,19 +342,25 @@ class Home extends Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const { loginApiErrors, isLoading } = this.state;
+    const { classes, history } = this.props;
+    const { loginApiErrors, isLoading, isUserLoggedIn } = this.state;
     return (
       <>
         <Header
           onChangeHandler={this.onChangeHandler.bind(this)}
           onLoginClickHandler={this.openModalHandler.bind(this)}
+          isUserLoggedIn={isUserLoggedIn}
+          history={history}
+          userLogout={this.userLogout.bind(this)}
         />
         <Container className={classes.root}>
           {isLoading && (
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <CircularProgress />
             </div>
+          )}
+          {isUserLoggedIn && (
+            <MessageSnackbar message="Logged in successfully!" open={true} />
           )}
           <Grid container spacing={3}>
             {!isLoading &&
