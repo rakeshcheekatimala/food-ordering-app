@@ -108,6 +108,7 @@ export default function Header(props) {
             variant="contained"
             className={classes.button}
             startIcon={<AccountCircleIcon />}
+            onClick={props.onLoginClickHandler}
           >
             Login
           </Button>
