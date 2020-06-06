@@ -13,3 +13,7 @@
 .red {
   color: red;
 }
+
+.errorMessage {
+  width: 200px;
+}

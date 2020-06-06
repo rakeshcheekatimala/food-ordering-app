@@ -197,21 +197,23 @@ class Home extends Component {
       });
     }
     let payload = window.btoa(contact_number + ':' + loginPassword);
-    let result = await login(payload);
-    if (result.isAxiosError) {
-      let { message } = result.response.data;
-      this.setState({
-        loginApiErrors: {
-          status: true,
-          errors: {
-            loginError: message,
+    if (isValidContact(contact_number) && loginPassword) {
+      let result = await login(payload);
+      if (result.isAxiosError) {
+        let { message } = result.response.data;
+        this.setState({
+          loginApiErrors: {
+            status: true,
+            errors: {
+              loginError: message,
+            },
           },
-        },
-      });
-    }
+        });
+      }
 
-    if (result.headers && result.headers['access-token']) {
-      sessionStorage.setItem('acccess-token', result.headers['access-token']);
+      if (result.headers && result.headers['access-token']) {
+        sessionStorage.setItem('acccess-token', result.headers['access-token']);
+      }
     }
   };
 
@@ -377,7 +379,7 @@ class Home extends Component {
           </Tabs>
 
           {this.state.value === 0 && (
-            <TabContainer>
+            <TabContainer className={classes.loginTab}>
               <FormControl required>
                 <InputLabel htmlFor="contact_number">Contact No</InputLabel>
                 <Input
@@ -390,7 +392,7 @@ class Home extends Component {
                   <span className="red">required</span>
                 </FormHelperText>
                 {loginApiErrors.status && (
-                  <FormHelperText className="dispBlock">
+                  <FormHelperText className="errorMessage">
                     <span className="red">
                       <br />
                       {loginApiErrors.errors.contactError}
@@ -412,7 +414,7 @@ class Home extends Component {
                   <span className="red">required</span>
                 </FormHelperText>
                 {loginApiErrors.status && (
-                  <FormHelperText className="dispBlock">
+                  <FormHelperText className="errorMessage">
                     <br />
                     <span className="red">
                       {loginApiErrors.errors.loginError}
