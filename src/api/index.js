@@ -20,14 +20,11 @@ export const getAllRestaurants = async () => {
 
 export const login = async (payload) => {
   let api = `${API_LOGIN}`;
-  try {
-    let result = await axios.post(api, null, {
-      headers: { Authorization: 'Basic ' + payload },
-    });
-    return result;
-  } catch (e) {
-    return e;
-  }
+
+  let results = await axios.post(api, null, {
+    headers: { Authorization: 'Basic ' + payload },
+  });
+  return results;
 };
 
 export const registration = async (payload) => {
