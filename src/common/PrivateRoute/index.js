@@ -4,7 +4,6 @@ import { isUserLoggedIn } from './../utils';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   let isLoggedIn = isUserLoggedIn();
-  console.log('isLoggedin', isLoggedIn);
   return (
     // Show the component only when the user is logged in
     // Otherwise, redirect the user to /signin page
