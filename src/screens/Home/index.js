@@ -7,6 +7,7 @@ import {
   registration,
 } from './../../api';
 import { isValidContact, isValidPassword } from './../../common/utils';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import {
   Grid,
@@ -85,10 +86,14 @@ class Home extends Component {
           contactError: '',
         },
       },
+      isLoading: true,
     };
   }
 
   componentDidMount() {
+    this.setState({
+      isLoading: true,
+    });
     this.loadAllRestaurants();
   }
 
@@ -98,16 +103,27 @@ class Home extends Component {
     } = await getAllRestaurants();
     this.setState({
       restaurants,
+      isLoading: false,
     });
   };
 
   onChangeHandler = async (e) => {
-    let {
-      data: { restaurants },
-    } = await filterRestaurantsByName(e.target.value);
-    this.setState({
-      restaurants,
-    });
+    if (e.target.value === '') {
+      this.loadAllRestaurants();
+    } else {
+      this.setState({
+        isLoading: true,
+      });
+      let {
+        data: { restaurants },
+      } = await filterRestaurantsByName(e.target.value);
+      this.setState({
+        restaurants,
+      });
+      this.setState({
+        isLoading: false,
+      });
+    }
   };
 
   closeModalHandler = () => {
@@ -192,6 +208,10 @@ class Home extends Component {
           },
         },
       });
+    }
+
+    if (result.headers && result.headers['access-token']) {
+      sessionStorage.setItem('acccess-token', result.headers['access-token']);
     }
   };
 
@@ -286,7 +306,8 @@ class Home extends Component {
 
   registerCustomer = async (payload) => {
     let result = await registration(payload);
-    console.log(result);
+
+    console.log('the registration result', result);
   };
   inputFirstNameChangeHandler = (e) => {
     this.setState({ firstname: e.target.value });
@@ -310,7 +331,7 @@ class Home extends Component {
 
   render() {
     const { classes } = this.props;
-    const { loginApiErrors } = this.state;
+    const { loginApiErrors, isLoading } = this.state;
     return (
       <>
         <Header
@@ -318,14 +339,25 @@ class Home extends Component {
           onLoginClickHandler={this.openModalHandler.bind(this)}
         />
         <Container className={classes.root}>
+          {isLoading && (
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <CircularProgress />
+            </div>
+          )}
           <Grid container spacing={3}>
-            {this.state.restaurants.map((item) => {
-              return (
-                <Grid item xs={12} md={3} key={item.id}>
-                  <RestaurantCard key={item.id} restaurant={item} />
-                </Grid>
-              );
-            })}
+            {!isLoading &&
+              this.state.restaurants.map((item) => {
+                return (
+                  <Grid item xs={12} md={3} key={item.id}>
+                    <RestaurantCard key={item.id} restaurant={item} />
+                  </Grid>
+                );
+              })}
+            {!isLoading && this.state.restaurants.length === 0 && (
+              <Typography variant="body1">
+                No restaurants with the given name
+              </Typography>
+            )}
           </Grid>
         </Container>
         <Modal
