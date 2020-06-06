@@ -6,7 +6,6 @@ import Profile from './Profile';
 import PrivateRoute from './../common/PrivateRoute';
 
 const Routes = (props) => {
-  console.log(props.history);
   return (
     <Router>
       <Switch>
