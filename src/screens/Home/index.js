@@ -341,6 +341,9 @@ class Home extends Component {
     this.setState({ contact: e.target.value });
   };
 
+  onRestaurantClick = (id) => {
+    this.props.history.push('/restaurant/' + id);
+  };
   render() {
     const { classes, history } = this.props;
     const { loginApiErrors, isLoading, isUserLoggedIn } = this.state;
@@ -366,7 +369,13 @@ class Home extends Component {
             {!isLoading &&
               this.state.restaurants.map((item) => {
                 return (
-                  <Grid item xs={12} md={3} key={item.id}>
+                  <Grid
+                    item
+                    xs={12}
+                    md={3}
+                    key={item.id}
+                    onClick={this.onRestaurantClick.bind(this, item.id)}
+                  >
                     <RestaurantCard key={item.id} restaurant={item} />
                   </Grid>
                 );
