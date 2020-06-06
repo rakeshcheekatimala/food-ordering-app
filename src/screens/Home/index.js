@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { Header, RestaurantCard } from './../../components';
-import { filterRestaurantsByName, getAllRestaurants, login } from './../../api';
+import {
+  filterRestaurantsByName,
+  getAllRestaurants,
+  login,
+  registration,
+} from './../../api';
+import { isValidContact, isValidPassword } from './../../common/utils';
+
 import {
   Grid,
   Container,
@@ -72,6 +79,12 @@ class Home extends Component {
           loginError: '',
         },
       },
+      registrationErros: {
+        status: false,
+        errors: {
+          contactError: '',
+        },
+      },
     };
   }
 
@@ -124,6 +137,12 @@ class Home extends Component {
         errors: {
           contactError: '',
           loginError: '',
+        },
+      },
+      registrationErros: {
+        status: false,
+        errors: {
+          contactError: '',
         },
       },
     });
@@ -185,31 +204,90 @@ class Home extends Component {
   };
 
   registerClickHandler = () => {
-    this.state.firstname === ''
+    let {
+      contact,
+      firstname,
+      lastname,
+      email,
+      registerPassword,
+      registrationErros,
+    } = this.state;
+
+    firstname === ''
       ? this.setState({ firstnameRequired: 'dispBlock' })
       : this.setState({ firstnameRequired: 'dispNone' });
-    this.state.lastname === ''
+    lastname === ''
       ? this.setState({ lastnameRequired: 'dispBlock' })
       : this.setState({ lastnameRequired: 'dispNone' });
-    this.state.email === ''
+    email === ''
       ? this.setState({ emailRequired: 'dispBlock' })
       : this.setState({ emailRequired: 'dispNone' });
-    this.state.registerPassword === ''
+    registerPassword === ''
       ? this.setState({ registerPasswordRequired: 'dispBlock' })
       : this.setState({ registerPasswordRequired: 'dispNone' });
-    this.state.contact === ''
+    contact === ''
       ? this.setState({ contactRequired: 'dispBlock' })
       : this.setState({ contactRequired: 'dispNone' });
 
-    let dataSignup = JSON.stringify({
-      email_address: this.state.email,
-      first_name: this.state.firstname,
-      last_name: this.state.lastname,
-      mobile_number: this.state.contact,
-      password: this.state.registerPassword,
-    });
+    if (
+      firstname === '' ||
+      lastname === '' ||
+      email === '' ||
+      registerPassword === '' ||
+      contact === ''
+    ) {
+      return;
+    }
+    if (contact && isValidContact(contact)) {
+      this.setState({
+        registrationErros: {
+          status: true,
+          errors: {
+            contactError:
+              'Contact No. must contain only numbers and must be 10 digits long',
+          },
+        },
+      });
+    } else {
+      this.setState({
+        registrationErros: {
+          status: false,
+        },
+      });
+    }
+    if (registerPassword && isValidPassword(registerPassword)) {
+      this.setState({
+        registrationErros: {
+          status: true,
+          errors: {
+            passwordError:
+              'Password must contain at least one capital letter, one small letter, one number, and one special character',
+          },
+        },
+      });
+    } else {
+      this.setState({
+        registrationErros: {
+          status: false,
+        },
+      });
+    }
+    if (!registrationErros.status) {
+      let registrationPayload = JSON.stringify({
+        first_name: firstname,
+        last_name: lastname,
+        email_address: email,
+        contact_number: contact,
+        password: registerPassword,
+      });
+      this.registerCustomer(registrationPayload);
+    }
   };
 
+  registerCustomer = async (payload) => {
+    let result = await registration(payload);
+    console.log(result);
+  };
   inputFirstNameChangeHandler = (e) => {
     this.setState({ firstname: e.target.value });
   };

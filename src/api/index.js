@@ -3,6 +3,7 @@ import {
   API_FILTER_BY_NAME,
   API_ALL_RESTAURANTS,
   API_LOGIN,
+  API_SIGNUP,
 } from './constants';
 
 export const filterRestaurantsByName = async (name) => {
@@ -23,6 +24,17 @@ export const login = async (payload) => {
     let result = await axios.post(api, null, {
       headers: { Authorization: 'Basic ' + payload },
     });
+    return result;
+  } catch (e) {
+    return e;
+  }
+};
+
+export const registration = async (payload) => {
+  let api = `${API_SIGNUP}`;
+  try {
+    let result = await axios.post(api, payload);
+    console.log('the result in registration api', result);
     return result;
   } catch (e) {
     return e;
