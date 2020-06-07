@@ -3,10 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import Routes from './screens';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+const theme = createMuiTheme({
+  typography: {
+    subtitle1: {
+      fontSize: 12,
+    },
+    body1: {
+      fontSize: 12,
+    },
+  },
+});
 
 ReactDOM.render(
   <div>
-    <Routes />
+    <ThemeProvider theme={theme}>
+      <Routes />
+    </ThemeProvider>
   </div>,
   document.getElementById('root')
 );
