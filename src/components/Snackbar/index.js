@@ -4,24 +4,20 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
 export default function MessageSnackbar(props) {
-  const [open, setOpen] = React.useState(props.open ? props.open : false);
-
+  let open = props.open;
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
+    props.onClose(); // call the parent onClose that changes the state variable of open
   };
 
   return (
     <div>
       <Snackbar
         anchorOrigin={{
-          vertical: 'top',
+          vertical: 'bottom',
           horizontal: 'left',
         }}
         open={open}
-        autoHideDuration={6000}
+        autoHideDuration={2000}
         onClose={handleClose}
         message={props.message}
         action={
