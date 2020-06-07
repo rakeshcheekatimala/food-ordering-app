@@ -373,7 +373,8 @@ class Home extends Component {
                   <Grid
                     item
                     xs={12}
-                    md={3}
+                    md={6}
+                    lg={3}
                     key={item.id}
                     onClick={this.onRestaurantClick.bind(this, item.id)}
                   >
