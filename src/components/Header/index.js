@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header(props) {
   const classes = useStyles();
-  const history = props.history;
+  let { history, showSearch } = props;
   let isLoggedIn = props.isUserLoggedIn;
 
   return (
@@ -93,20 +93,22 @@ export default function Header(props) {
             <FastfoodIcon />
           </IconButton>
 
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+          {showSearch ? (
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={props.onChangeHandler}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={props.onChangeHandler}
-            />
-          </div>
+          ) : null}
           {isLoggedIn ? (
             <ProfileDropdown history={history} userLogout={props.userLogout} />
           ) : (
