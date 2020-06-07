@@ -1,0 +1,44 @@
+.item__list {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0rem;
+}
+
+.item__list .item__category {
+  display: flex;
+  align-items: center;
+}
+
+.item__price {
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.plusicon {
+  margin-left: 1.5rem;
+}
+
+.circle {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+}
+
+.adjusticon {
+  font-size: 1rem;
+}
+
+.alignCenter {
+  display: flex;
+  align-items: center;
+}
+
+.checkout__item {
+  margin-top: 1rem;
+}
+
+.justify-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
