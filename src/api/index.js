@@ -7,7 +7,6 @@ import {
   API_RESTAURANT_DETAIL,
 } from './constants';
 
-
 export const getRestaurantById = async (id) => {
   try {
     let api = `${API_RESTAURANT_DETAIL}/${id}`;
@@ -43,9 +42,16 @@ export const login = async (payload) => {
 
 export const registration = async (payload) => {
   let api = `${API_SIGNUP}`;
+  //payload = JSON.stringify(payload);
+  let config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
   try {
-    let result = await axios.post(api, payload);
-    console.log('the result in registration api', result);
+    let result = await axios.post(api, payload, config);
     return result;
   } catch (e) {
     return e;
