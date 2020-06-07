@@ -4,8 +4,19 @@ import {
   API_ALL_RESTAURANTS,
   API_LOGIN,
   API_SIGNUP,
+  API_RESTAURANT_DETAIL,
 } from './constants';
 
+
+export const getRestaurantById = async (id) => {
+  try {
+    let api = `${API_RESTAURANT_DETAIL}/${id}`;
+    let result = await axios.get(api);
+    return result;
+  } catch (e) {
+    return e;
+  }
+};
 export const filterRestaurantsByName = async (name) => {
   let api = `${API_FILTER_BY_NAME}${name}`;
   let results = await axios.get(api);
