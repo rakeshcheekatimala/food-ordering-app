@@ -24,6 +24,9 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
   },
+  mb15: {
+    marginBottom: '1rem',
+  },
 });
 
 export default function RestaurantCard(props) {
@@ -39,7 +42,7 @@ export default function RestaurantCard(props) {
     },
   } = props;
   return (
-    <Card className={classes.root}>
+    <Card>
       <CardActionArea>
         <CardMedia
           className={classes.media}
@@ -47,7 +50,7 @@ export default function RestaurantCard(props) {
           title="Contemplative Reptile"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography variant="h6" className={classes.mb15}>
             {restaurant_name}
           </Typography>
           <Typography
@@ -73,4 +76,3 @@ export default function RestaurantCard(props) {
     </Card>
   );
 }
-
