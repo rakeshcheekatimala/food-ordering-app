@@ -355,6 +355,7 @@ class Home extends Component {
           isUserLoggedIn={isUserLoggedIn}
           history={history}
           userLogout={this.userLogout.bind(this)}
+          showSearch={true}
         />
         <Container className={classes.root}>
           {isLoading && (
