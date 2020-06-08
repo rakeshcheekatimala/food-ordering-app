@@ -5,6 +5,7 @@ import {
   API_LOGIN,
   API_SIGNUP,
   API_RESTAURANT_DETAIL,
+  API_GET_ALLSTATES,
 } from './constants';
 
 export const getRestaurantById = async (id) => {
@@ -56,4 +57,10 @@ export const registration = async (payload) => {
   } catch (e) {
     return e;
   }
+};
+
+export const getAllStates = async () => {
+  let api = `${API_GET_ALLSTATES}`;
+  let results = await axios.get(api);
+  return results;
 };
