@@ -1,0 +1,55 @@
+.RestaurantDetails {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.Restaurant-Main {
+  padding: 22px;
+  background-color: lightgrey;
+}
+
+.ImageLeft {
+  width: 30%;
+  padding: 5px;
+}
+.detailsRight {
+  width: 70%;
+  padding: 30px;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.center {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: left;
+}
+
+.left {
+  width: 50%;
+}
+
+.right {
+  width: 50%;
+}
+
+.caption {
+  color: grey;
+}
+.averageRating {
+  width: 30%;
+}
+
+.averageCost {
+  width: 30%;
+}
+
+.ratingIcon {
+  display: flex;
+  align-content: center;
+}

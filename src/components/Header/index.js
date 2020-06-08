@@ -9,6 +9,7 @@ import FastfoodIcon from '@material-ui/icons/Fastfood';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
 import ProfileDropdown from './../Dropdown';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -77,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header(props) {
   const classes = useStyles();
-  const history = props.history;
+  let { history, showSearch } = props;
   let isLoggedIn = props.isUserLoggedIn;
 
   return (
@@ -89,24 +90,29 @@ export default function Header(props) {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={() => {
+              history.push('/');
+            }}
           >
             <FastfoodIcon />
           </IconButton>
 
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+          {showSearch ? (
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={props.onChangeHandler}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={props.onChangeHandler}
-            />
-          </div>
+          ) : null}
           {isLoggedIn ? (
             <ProfileDropdown history={history} userLogout={props.userLogout} />
           ) : (
@@ -124,3 +130,11 @@ export default function Header(props) {
     </div>
   );
 }
+
+Header.defaultProps = {
+  showSearch: false,
+};
+
+Header.propTypes = {
+  showSearch: PropTypes.bool,
+};
