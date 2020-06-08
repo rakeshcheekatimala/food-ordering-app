@@ -1,9 +1,11 @@
 import React from 'react';
-import { IconButton, Menu, MenuItem } from '@material-ui/core';
+import { IconButton, Menu, MenuItem, Typography } from '@material-ui/core';
 import { fade, makeStyles } from '@material-ui/core/styles';
 ////import { userLogout } from './../../common/utils';
 import { Link } from 'react-router-dom';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { getUserName } from './../../common/utils';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,7 +76,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProfileDropdown(props) {
-  console.log(sessionStorage);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -104,6 +105,9 @@ export default function ProfileDropdown(props) {
       >
         <AccountCircleIcon aria-label="recipe" className={classes.avatar} />
       </IconButton>
+      <Typography variant="body1" component="span">
+        {getUserName()}
+      </Typography>
       <Menu
         id="menu-appbar"
         anchorEl={anchorEl}
@@ -130,3 +134,13 @@ export default function ProfileDropdown(props) {
     </div>
   );
 }
+
+ProfileDropdown.defaultProps = {
+  handleLogout: () => {},
+  handleClose: () => {},
+};
+
+ProfileDropdown.propTypes = {
+  handleClose: PropTypes.func,
+  handleLogout: PropTypes.func,
+};
