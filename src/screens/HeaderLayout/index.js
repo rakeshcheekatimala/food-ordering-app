@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Header } from './../../components';
+import { Header, MessageSnackbar } from './../../components';
 import { login, registration } from './../../api';
 import { isValidContact, isValidPassword } from './../../common/utils';
 import { userLogout } from './../../common/utils';
 import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import * as EmailValidator from 'email-validator';
 
 import {
   withStyles,
@@ -72,14 +74,15 @@ class HeaderLayout extends Component {
           loginError: '',
         },
       },
-      registrationErros: {
+      registrationErrors: {
         status: false,
         errors: {
           contactError: '',
         },
       },
       isLoading: true,
-      isUserLoggedIn: sessionStorage.getItem('access-token') ? true : false,
+      isUserLoggedIn: false,
+      isRegistrationSuccess: false,
     };
   }
 
@@ -105,6 +108,7 @@ class HeaderLayout extends Component {
       registerPassword: '',
       contactRequired: 'dispNone',
       contact: '',
+      openSnackbar: false,
       loginApiErrors: {
         status: false,
         errors: {
@@ -112,12 +116,16 @@ class HeaderLayout extends Component {
           loginError: '',
         },
       },
-      registrationErros: {
+      registrationErrors: {
         status: false,
         errors: {
           contactError: '',
+          passwordError: '',
+          apiError: '',
+          emailError: '',
         },
       },
+      isRegistrationSuccess: false,
     });
   };
 
@@ -170,7 +178,12 @@ class HeaderLayout extends Component {
 
       if (result.headers && result.headers['access-token']) {
         sessionStorage.setItem('access-token', result.headers['access-token']);
-        this.setState({ isUserLoggedIn: true, modalIsOpen: false });
+        this.setState({
+          isUserLoggedIn: true,
+          modalIsOpen: false,
+          openSnackbar: true,
+        });
+        sessionStorage.setItem('username', result.data.first_name);
       }
     }
   };
@@ -184,15 +197,9 @@ class HeaderLayout extends Component {
   };
 
   registerClickHandler = () => {
-    let {
-      contact,
-      firstname,
-      lastname,
-      email,
-      registerPassword,
-      registrationErros,
-    } = this.state;
-
+    let { contact, firstname, lastname, email, registerPassword } = this.state;
+    let isErrors = false,
+      errors = {};
     firstname === ''
       ? this.setState({ firstnameRequired: 'dispBlock' })
       : this.setState({ firstnameRequired: 'dispNone' });
@@ -216,43 +223,30 @@ class HeaderLayout extends Component {
       registerPassword === '' ||
       contact === ''
     ) {
+      isErrors = true;
       return;
     }
     if (contact && isValidContact(contact)) {
-      this.setState({
-        registrationErros: {
-          status: true,
-          errors: {
-            contactError:
-              'Contact No. must contain only numbers and must be 10 digits long',
-          },
-        },
-      });
+      errors.contactError = null;
     } else {
-      this.setState({
-        registrationErros: {
-          status: false,
-        },
-      });
+      errors.contactError =
+        'Contact No. must contain only numbers and must be 10 digits long';
+      isErrors = true;
     }
     if (registerPassword && isValidPassword(registerPassword)) {
-      this.setState({
-        registrationErros: {
-          status: true,
-          errors: {
-            passwordError:
-              'Password must contain at least one capital letter, one small letter, one number, and one special character',
-          },
-        },
-      });
+      errors.passwordError = '';
     } else {
-      this.setState({
-        registrationErros: {
-          status: false,
-        },
-      });
+      errors.passwordError =
+        'Password must contain at least one capital letter, one small letter, one number, and one special character';
+      isErrors = true;
     }
-    if (!registrationErros.status) {
+    if (EmailValidator.validate(email)) {
+      errors.emailError = '';
+    } else {
+      errors.emailError = 'Invalid Contact';
+    }
+    console.log(EmailValidator.validate(email), 'isValid email');
+    if (!isErrors) {
       let registrationPayload = JSON.stringify({
         first_name: firstname,
         last_name: lastname,
@@ -261,13 +255,37 @@ class HeaderLayout extends Component {
         password: registerPassword,
       });
       this.registerCustomer(registrationPayload);
+    } else {
+      this.setState({
+        registrationErrors: {
+          status: true,
+          errors,
+        },
+      });
     }
   };
 
   registerCustomer = async (payload) => {
     let result = await registration(payload);
-
-    console.log('the registration result', result);
+    if (result.status === 201) {
+      this.setState({
+        isRegistrationSuccess: true,
+        openSnackbar: true,
+        modalIsOpen: false,
+      });
+    }
+    if (result.code) {
+      this.setState({
+        registrationErrors: {
+          status: true,
+          errors: {
+            passwordError: null,
+            contactError: null,
+            apiError: result.message,
+          },
+        },
+      });
+    }
   };
   inputFirstNameChangeHandler = (e) => {
     this.setState({ firstname: e.target.value });
@@ -296,17 +314,28 @@ class HeaderLayout extends Component {
     userLogout();
   };
 
+  onClose = () => {
+    this.setState({ openSnackbar: false }); // close the snackbar
+  };
+
   render() {
-    const { classes, history } = this.props;
-    const { loginApiErrors, isUserLoggedIn } = this.state;
+    const { classes, history, showSearch } = this.props;
+    const {
+      loginApiErrors,
+      isUserLoggedIn,
+      openSnackbar,
+      isRegistrationSuccess,
+      registrationErrors,
+    } = this.state;
     return (
       <>
         <Header
-          onChangeHandler={() => {}}
+          onChangeHandler={this.props.onChangeHandler}
           onLoginClickHandler={this.openModalHandler.bind(this)}
           isUserLoggedIn={isUserLoggedIn}
           history={history}
           userLogout={this.userLogout.bind(this)}
+          showSearch={showSearch}
         />
 
         <Modal
@@ -429,6 +458,13 @@ class HeaderLayout extends Component {
                 <FormHelperText className={this.state.emailRequired}>
                   <span className="red">required</span>
                 </FormHelperText>
+                {registrationErrors.status && (
+                  <FormHelperText className="errorMessage">
+                    <span className="red">
+                      {registrationErrors.errors.emailError}
+                    </span>
+                  </FormHelperText>
+                )}
               </FormControl>
               <br />
               <br />
@@ -443,6 +479,13 @@ class HeaderLayout extends Component {
                 <FormHelperText className={this.state.registerPasswordRequired}>
                   <span className="red">required</span>
                 </FormHelperText>
+                {registrationErrors.status && (
+                  <FormHelperText className="errorMessage">
+                    <span className="red">
+                      {registrationErrors.errors.passwordError}
+                    </span>
+                  </FormHelperText>
+                )}
               </FormControl>
               <br />
               <br />
@@ -457,18 +500,23 @@ class HeaderLayout extends Component {
                 <FormHelperText className={this.state.contactRequired}>
                   <span className="red">required</span>
                 </FormHelperText>
+                {registrationErrors.status && (
+                  <FormHelperText className="errorMessage">
+                    <span className="red">
+                      {registrationErrors.errors.contactError}
+                    </span>
+                  </FormHelperText>
+                )}
               </FormControl>
               <br />
               <br />
-              {this.state.registrationSuccess === true && (
-                <FormControl>
-                  <span className="successText">
-                    Registration Successful. Please Login!
+              {registrationErrors.status && (
+                <FormHelperText className="errorMessage">
+                  <span className="red">
+                    {registrationErrors.errors.apiError}
                   </span>
-                </FormControl>
+                </FormHelperText>
               )}
-              <br />
-              <br />
               <Button
                 variant="contained"
                 color="primary"
@@ -479,9 +527,31 @@ class HeaderLayout extends Component {
             </TabContainer>
           )}
         </Modal>
+        {isUserLoggedIn && (
+          <MessageSnackbar
+            message="User is Logged Succesfully!"
+            open={openSnackbar}
+            onClose={this.onClose.bind(this)}
+          />
+        )}
+        {isRegistrationSuccess && (
+          <MessageSnackbar
+            message="Customer is Registered Succesfully!"
+            open={openSnackbar}
+            onClose={this.onClose.bind(this)}
+          />
+        )}
       </>
     );
   }
 }
 
 export default withStyles(useStyles)(withRouter(HeaderLayout));
+
+HeaderLayout.defaultProps = {
+  onChangeHandler: () => {},
+};
+
+HeaderLayout.propTypes = {
+  onChangeHandler: PropTypes.func,
+};
