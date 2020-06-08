@@ -90,6 +90,9 @@ export default function Header(props) {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={() => {
+              history.push('/');
+            }}
           >
             <FastfoodIcon />
           </IconButton>
