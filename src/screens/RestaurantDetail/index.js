@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core';
 import './styles.css';
 import { v4 as uuidv4 } from 'uuid';
+import { withRouter } from 'react-router-dom';
 
 import {
   Adjust as AdjustIcon,
@@ -172,6 +173,9 @@ class RestaurantDetail extends Component {
         errorKey: uuidv4(),
         openSnackbar: true,
       });
+    }
+    if (isLoggedIn && qtyCount) {
+      this.props.history.push('/checkout'); // navigate to the checkout page
     }
   };
 
@@ -392,4 +396,4 @@ class RestaurantDetail extends Component {
   }
 }
 
-export default withStyles(useStyles)(RestaurantDetail);
+export default withStyles(useStyles)(withRouter(RestaurantDetail));
