@@ -50,3 +50,7 @@ export const isValidContact = (contact_number) => {
   }
   return true;
 };
+
+export const getUserName = () => {
+  return sessionStorage.getItem('username');
+};
