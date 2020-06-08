@@ -9,6 +9,7 @@ import FastfoodIcon from '@material-ui/icons/Fastfood';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
 import ProfileDropdown from './../Dropdown';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -126,3 +127,11 @@ export default function Header(props) {
     </div>
   );
 }
+
+Header.defaultProps = {
+  showSearch: false,
+};
+
+Header.propTypes = {
+  showSearch: PropTypes.bool,
+};
