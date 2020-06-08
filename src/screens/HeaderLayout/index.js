@@ -243,7 +243,7 @@ class HeaderLayout extends Component {
     if (EmailValidator.validate(email)) {
       errors.emailError = '';
     } else {
-      errors.emailError = 'Invalid Contact';
+      errors.emailError = 'Invalid Email';
     }
     console.log(EmailValidator.validate(email), 'isValid email');
     if (!isErrors) {
