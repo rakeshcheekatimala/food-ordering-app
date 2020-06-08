@@ -43,3 +43,15 @@ img{
 
 
 }
+.averageRating{
+    width:30%;
+}
+
+.averageCost{
+    width:30%;
+}
+
+.ratingIcon{
+    display:flex;
+    align-content: center;
+}
