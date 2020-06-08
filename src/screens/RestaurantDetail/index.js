@@ -17,7 +17,7 @@ import {
 import './styles.css';
 import { v4 as uuidv4 } from 'uuid';
 import { withRouter } from 'react-router-dom';
-
+import { addSelectedItems } from './../../common/utils';
 import {
   Adjust as AdjustIcon,
   Remove as RemoveIcon,
@@ -175,6 +175,7 @@ class RestaurantDetail extends Component {
       });
     }
     if (isLoggedIn && qtyCount) {
+      addSelectedItems(this.state.selectedItems);
       this.props.history.push('/checkout'); // navigate to the checkout page
     }
   };
