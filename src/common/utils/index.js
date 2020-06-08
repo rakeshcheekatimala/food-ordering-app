@@ -54,3 +54,17 @@ export const isValidContact = (contact_number) => {
 export const getUserName = () => {
   return sessionStorage.getItem('username');
 };
+
+export const addSelectedItems = (selectedItems) => {
+  let cartitems = {};
+  for (let [key, value] of selectedItems) {
+    cartitems[key] = value;
+  }
+  cartitems = JSON.stringify(cartitems);
+  sessionStorage.setItem('cartitems', cartitems);
+};
+
+export const getSelectedItems = () => {
+  let items = sessionStorage.getItem('cartitems');
+  return JSON.parse(items);
+};
