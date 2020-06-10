@@ -13,6 +13,7 @@ import {
   OrderSummary,
 } from './../../components';
 import { getSelectedItems } from './../../common/utils';
+import HeaderLayout from './../HeaderLayout';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,6 +66,7 @@ function Checkout() {
 
   return (
     <div className={classes.root}>
+      <HeaderLayout />
       <Grid container>
         <Grid item xs={12} md={9}>
           <Stepper activeStep={activeStep} orientation="vertical">
