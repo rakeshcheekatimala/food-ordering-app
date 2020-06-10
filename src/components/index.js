@@ -5,3 +5,4 @@ export { default as MessageSnackbar } from './Snackbar';
 export { default as AddressLayout } from './AddressLayout/AddressLayout';
 export { default as PaymentOptions } from './PaymentOptions/PaymentOptions';
 export { default as OrderSummary } from './OrderSummary/OrderSummary';
+export { default as AddressCard } from './AddressCard/AddressCard';
