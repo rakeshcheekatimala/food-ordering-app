@@ -6,8 +6,10 @@ import {
   API_SIGNUP,
   API_RESTAURANT_DETAIL,
   API_GET_ALLSTATES,
+  API_GET_ALLADDRESS,
+  API_LOGOUT,
 } from './constants';
-
+import { getUserToken } from './../common/utils';
 export const getRestaurantById = async (id) => {
   try {
     let api = `${API_RESTAURANT_DETAIL}/${id}`;
@@ -63,4 +65,30 @@ export const getAllStates = async () => {
   let api = `${API_GET_ALLSTATES}`;
   let results = await axios.get(api);
   return results;
+};
+
+export const getAllAddress = async () => {
+  let token = getUserToken();
+  let api = `${API_GET_ALLADDRESS}`;
+  try {
+    let results = await axios.get(api, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return results;
+  } catch (e) {
+    return e;
+  }
+};
+
+export const logout = async () => {
+  let token = getUserToken();
+  let api = `${API_LOGOUT}`;
+  try {
+    let results = await axios.post(api, null, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return results;
+  } catch (e) {
+    return e;
+  }
 };
