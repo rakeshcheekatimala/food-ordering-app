@@ -1,17 +1,51 @@
 import React from 'react';
-import { Grid, Typography, Card, CardContent } from '@material-ui/core';
+import {
+  Grid,
+  Typography,
+  Card,
+  CardContent,
+  makeStyles,
+} from '@material-ui/core';
 import { Adjust as AdjustIcon } from '@material-ui/icons/';
+import './OrderSummary.css';
+
+const useStyles = makeStyles((theme) => ({
+  ml15: {
+    marginLeft: '1rem',
+  },
+  fullwidth: {
+    width: '100%',
+  },
+  ordersummary: {
+    marginTop: '24px',
+
+    [theme.breakpoints.down('sm')]: {
+      width: 'calc(100% - 48px)',
+      margin: '0px 24px',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: 'calc(100% - 24px)',
+    },
+  },
+  spaceAround: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginRight: '16px',
+  },
+}));
 
 const OrderSummary = (props) => {
   let { selectedItems } = props;
-  console.log('ordersummary..');
+  const classes = useStyles();
+
   return (
     <>
-      <Card>
+      <Card className={classes.ordersummary}>
         <CardContent>
-          <Typography variant="h4">SUMMARY</Typography>
+          <Typography variant="h3">Summary</Typography>
+          <br />
           <Grid container>
-            {[...selectedItems].map((item) => {
+            {[...selectedItems].map((item, index) => {
               return (
                 <React.Fragment key={'checkout' + item[1].id}>
                   <Grid item xs={7} className="alignCenter">
@@ -23,11 +57,22 @@ const OrderSummary = (props) => {
                           : { color: 'crimson' }
                       }
                     />
-                    <Typography variant="subtitle1" component="span">
+                    <Typography
+                      variant="subtitle1"
+                      component="span"
+                      className={classes.ml15}
+                    >
                       {item[1].item_name}
                     </Typography>
+                    <Typography
+                      variant="body1"
+                      component="span"
+                      className={classes.ml15}
+                    >
+                      {item[1].qty}
+                    </Typography>
                   </Grid>
-
+                  <Grid item xs={3} className="alignCenter"></Grid>
                   <Grid item xs={2} className="alignCenter">
                     <Typography variant="subtitle2" component="span">
                       <b>₹</b>
@@ -36,6 +81,17 @@ const OrderSummary = (props) => {
                   </Grid>
                   <br />
                   <br />
+                  {parseInt(index + 1) === selectedItems.size && (
+                    <>
+                      <hr className={classes.fullwidth} />
+                      <Grid item xs={12} className={classes.spaceAround}>
+                        <Typography variant="body1">Net Amount</Typography>
+                        <Typography variant="subtitle2">
+                          <b>₹</b>5000
+                        </Typography>
+                      </Grid>
+                    </>
+                  )}
                 </React.Fragment>
               );
             })}
