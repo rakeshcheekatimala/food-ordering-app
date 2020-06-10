@@ -66,7 +66,7 @@ function Checkout() {
   return (
     <div className={classes.root}>
       <Grid container>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={9}>
           <Stepper activeStep={activeStep} orientation="vertical">
             {steps.map((label, index) => (
               <Step key={label}>
@@ -97,7 +97,7 @@ function Checkout() {
             ))}
           </Stepper>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3} className={classes.ordersummary__container}>
           <OrderSummary selectedItems={selectedItems} />
         </Grid>
       </Grid>
