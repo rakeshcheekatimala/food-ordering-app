@@ -17,3 +17,7 @@ export const API_GET_ALLADDRESS =
   process.env.REACT_APP_API + '/api/address/customer';
 
 export const API_LOGOUT = process.env.REACT_APP_API + '/api/customer/logout';
+
+export const API_PAYMENTS_OPTIONS = process.env.REACT_APP_API + '/api/payment';
+
+export const API_SAVE_ORDER = process.env.REACT_APP_API + '/api/order';
