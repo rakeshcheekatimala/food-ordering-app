@@ -12,9 +12,9 @@ import {
   PaymentOptions,
   OrderSummary,
 } from './../../components';
-import { getSelectedItems } from './../../common/utils';
+import { getSelectedItems, getRestaurantInfo } from './../../common/utils';
 import HeaderLayout from './../HeaderLayout';
-
+import { saveOrder } from './../../api';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -35,12 +35,36 @@ function getSteps() {
   return ['Delivery', 'Payment'];
 }
 
-function getStepContent(step) {
+function getStepContent(step, setCheckout, checkout) {
+  const onClickHandler = (address) => {
+    setCheckout({
+      ...checkout,
+      selectedAddress: address,
+    });
+  };
+  const paymentHandler = (payment) => {
+    console.log(payment);
+    setCheckout({
+      ...checkout,
+      selectedPaymentOption: payment[0],
+    });
+  };
+
   switch (step) {
     case 0:
-      return <AddressLayout />;
+      return (
+        <AddressLayout
+          onClick={onClickHandler}
+          addressSelected={checkout.selectedAddress.id}
+        />
+      );
     case 1:
-      return <PaymentOptions />; // @Sowdharya will update your component here ex:
+      return (
+        <PaymentOptions
+          onClick={paymentHandler}
+          paymentSelected={checkout.selectedPaymentOption}
+        />
+      ); // @Sowdharya will update your component here ex:
     default:
       return 'Unknown step';
   }
@@ -49,9 +73,17 @@ function getStepContent(step) {
 function Checkout() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
+
+  const [checkout, setCheckout] = React.useState({
+    selectedAddress: { id: '' },
+    selectedPaymentOption: { id: '', payment_name: '' },
+  }); // initial state
+
   const steps = getSteps();
   let selectedItems = getSelectedItems();
   selectedItems = new Map(Object.entries(selectedItems));
+  let selectedRestaurnt = getRestaurantInfo();
+  console.log(selectedRestaurnt);
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -64,6 +96,27 @@ function Checkout() {
     setActiveStep(0);
   };
 
+  const onOrderClickHandler = () => {
+    console.log('inside oRderClick', checkout);
+    let checkoutData = checkout;
+    let itemList = [...selectedItems].map((item) => {
+      console.log(item, item);
+      return {
+        item_id: item[1].id,
+        price: item[1].price,
+        quantity: item[1].qty,
+      };
+    });
+    let payload = {
+      address_id: checkoutData.selectedAddress.id,
+      bill: selectedRestaurnt.totalAmount,
+      payment_id: checkoutData.selectedPaymentOption.id,
+      item_quantities: itemList,
+      restaurant_id: selectedRestaurnt.id,
+    };
+    saveOrder(JSON.stringify(payload));
+  };
+
   return (
     <div className={classes.root}>
       <HeaderLayout />
@@ -74,7 +127,7 @@ function Checkout() {
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
                 <StepContent>
-                  {getStepContent(index)}
+                  {getStepContent(index, setCheckout, checkout)}
                   <div className={classes.actionsContainer}>
                     <div>
                       <Button
@@ -100,7 +153,11 @@ function Checkout() {
           </Stepper>
         </Grid>
         <Grid item xs={12} md={3} className={classes.ordersummary__container}>
-          <OrderSummary selectedItems={selectedItems} />
+          <OrderSummary
+            selectedItems={selectedItems}
+            restaurant={selectedRestaurnt}
+            onOrderClickHandler={onOrderClickHandler}
+          />
         </Grid>
       </Grid>
       {activeStep === steps.length && (
