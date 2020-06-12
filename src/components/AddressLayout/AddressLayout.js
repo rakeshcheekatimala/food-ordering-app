@@ -38,7 +38,8 @@ const useStyles = (theme) => ({
       'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
   },
   gridListTitle: {
-    //margin: '1rem 0px',
+    margin: '1rem',
+    height: '100%',
   },
 });
 
@@ -71,14 +72,25 @@ class AddressTabs extends Component {
     });
   };
   renderAddressCards = () => {
-    let { classes } = this.props;
+    let { classes, onClick, addressSelected } = this.props;
+    console.log(addressSelected, 'addresselected...');
     return (
       <div className={classes.root}>
-        <GridList className={classes.gridList} cols={2.5}>
+        <GridList className={classes.gridList}>
           {this.state.addresses.map((address) => {
             return (
-              <GridListTile key={address.id} className={classes.gridListTitle}>
-                <AddressCard address={address} key={address.id} />
+              <GridListTile
+                key={address.id}
+                className={classes.gridListTitle}
+                onClick={() => {
+                  onClick(address);
+                }}
+              >
+                <AddressCard
+                  address={address}
+                  key={address.id}
+                  active={addressSelected === address.id ? true : false}
+                />
               </GridListTile>
             );
           })}
