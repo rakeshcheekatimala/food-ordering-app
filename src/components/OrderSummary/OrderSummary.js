@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   makeStyles,
+  Button,
 } from '@material-ui/core';
 import { Adjust as AdjustIcon } from '@material-ui/icons/';
 import './OrderSummary.css';
@@ -15,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   fullwidth: {
     width: '100%',
+    marginTop: '1rem',
   },
   ordersummary: {
     marginTop: '24px',
@@ -35,7 +37,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OrderSummary = (props) => {
-  let { selectedItems } = props;
+  let {
+    selectedItems,
+    restaurant: { name, totalAmount },
+    onOrderClickHandler,
+  } = props;
   const classes = useStyles();
 
   return (
@@ -43,6 +49,8 @@ const OrderSummary = (props) => {
       <Card className={classes.ordersummary}>
         <CardContent>
           <Typography variant="h3">Summary</Typography>
+          <br />
+          <Typography variant="h3">{name}</Typography>
           <br />
           <Grid container>
             {[...selectedItems].map((item, index) => {
@@ -87,8 +95,19 @@ const OrderSummary = (props) => {
                       <Grid item xs={12} className={classes.spaceAround}>
                         <Typography variant="body1">Net Amount</Typography>
                         <Typography variant="subtitle2">
-                          <b>₹</b>5000
+                          <b>₹</b>
+                          {totalAmount}
                         </Typography>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          className={classes.fullwidth}
+                          onClick={onOrderClickHandler}
+                        >
+                          PLACE ORDER
+                        </Button>
                       </Grid>
                     </>
                   )}
