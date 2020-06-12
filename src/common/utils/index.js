@@ -68,3 +68,12 @@ export const getSelectedItems = () => {
   let items = sessionStorage.getItem('cartitems');
   return JSON.parse(items);
 };
+
+export const addRestaurantDetail = (restaurant) => {
+  sessionStorage.setItem('restaurant', JSON.stringify(restaurant));
+};
+
+export const getRestaurantInfo = () => {
+  let items = sessionStorage.getItem('restaurant');
+  return JSON.parse(items);
+};
