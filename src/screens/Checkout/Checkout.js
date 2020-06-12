@@ -162,9 +162,9 @@ function Checkout() {
       </Grid>
       {activeStep === steps.length && (
         <Paper square elevation={0} className={classes.resetContainer}>
-          <Typography>All steps completed - you&apos;re finished</Typography>
+          <Typography>View the summary and place your order now!</Typography>
           <Button onClick={handleReset} className={classes.button}>
-            Reset
+            Change
           </Button>
         </Paper>
       )}

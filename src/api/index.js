@@ -10,6 +10,7 @@ import {
   API_LOGOUT,
   API_PAYMENTS_OPTIONS,
   API_SAVE_ORDER,
+  
 } from './constants';
 import { getUserToken } from './../common/utils';
 
@@ -124,6 +125,16 @@ export const saveOrder = async (payload) => {
     });
     return results;
   } catch (e) {
+    return e;
+  }
+};
+
+export const getPaymentMethods = async () => {
+  try{
+    let api=`${API_PAYMENTS_OPTIONS}`;
+    let result= await axios.get(api);
+    return result;
+  }catch(e){
     return e;
   }
 };
