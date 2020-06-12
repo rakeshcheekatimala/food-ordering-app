@@ -1,11 +1,12 @@
 import React from 'react';
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
+import joinClassNames from 'classnames';
 const useStyles = makeStyles({
   root: {
     //width: 275,
     marginLeft: '1rem',
+    //minHeight: '400px',
   },
   bullet: {
     display: 'inline-block',
@@ -22,7 +23,8 @@ const useStyles = makeStyles({
     padding: '12px',
   },
   active: {
-    boxShadow: '5px 10px 8px 10px deeppink',
+    boxShadow: '2px 1px 3px 3px deeppink',
+    border: '2px solid deeppink',
   },
 });
 
@@ -35,9 +37,9 @@ export default function AddressCard(props) {
     state: { state_name },
   } = props.address;
   const classes = useStyles();
-
+  let active = props.active ? classes.active : '';
   return (
-    <Card className={classes.root}>
+    <Card className={joinClassNames(classes.root, active)}>
       <CardContent className={classes.cardContent}>
         <Typography
           className={classes.title}
