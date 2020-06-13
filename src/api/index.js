@@ -1,18 +1,18 @@
 import axios from 'axios';
 import {
-  API_FILTER_BY_NAME,
   API_ALL_RESTAURANTS,
-  API_LOGIN,
-  API_SIGNUP,
-  API_RESTAURANT_DETAIL,
-  API_GET_ALLSTATES,
+  API_FILTER_BY_NAME,
   API_GET_ALLADDRESS,
+  API_GET_ALLSTATES,
+  API_LOGIN,
   API_LOGOUT,
   API_PAYMENTS_OPTIONS,
+  API_RESTAURANT_DETAIL,
+  API_SAVE_ADDRESS,
   API_SAVE_ORDER,
-  
+  API_SIGNUP,
 } from './constants';
-import { getUserToken } from './../common/utils';
+import {getUserToken} from './../common/utils';
 
 export const getRestaurantById = async (id) => {
   try {
@@ -80,7 +80,7 @@ export const getAllAddress = async () => {
   let api = `${API_GET_ALLADDRESS}`;
   try {
     let results = await axios.get(api, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {Authorization: `Bearer ${token}`},
     });
     return results;
   } catch (e) {
@@ -93,7 +93,7 @@ export const logout = async () => {
   let api = `${API_LOGOUT}`;
   try {
     let results = await axios.post(api, null, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {Authorization: `Bearer ${token}`},
     });
     return results;
   } catch (e) {
@@ -129,12 +129,30 @@ export const saveOrder = async (payload) => {
   }
 };
 
+export const saveAddress = async (payload) => {
+
+  try {
+    let token = getUserToken();
+    let api = `${API_SAVE_ADDRESS}`;
+
+    return await axios.post(api, payload, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (e) {
+    return e;
+  }
+};
+
 export const getPaymentMethods = async () => {
-  try{
-    let api=`${API_PAYMENTS_OPTIONS}`;
-    let result= await axios.get(api);
+  try {
+    let api = `${API_PAYMENTS_OPTIONS}`;
+    let result = await axios.get(api);
     return result;
-  }catch(e){
+  } catch (e) {
     return e;
   }
 };
