@@ -6,7 +6,7 @@ import { userLogout } from './../../common/utils';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as EmailValidator from 'email-validator';
-
+import { isUserLoggedIn as userLoogedIn } from './../../common/utils';
 import {
   withStyles,
   Tabs,
@@ -86,6 +86,11 @@ class HeaderLayout extends Component {
     };
   }
 
+  componentDidMount() {
+    this.setState({
+      isUserLoggedIn: userLoogedIn(),
+    });
+  }
   closeModalHandler = () => {
     this.setState({ modalIsOpen: false });
   };
@@ -243,7 +248,7 @@ class HeaderLayout extends Component {
     if (EmailValidator.validate(email)) {
       errors.emailError = '';
     } else {
-      errors.emailError = 'Invalid Contact';
+      errors.emailError = 'Invalid Email';
     }
     console.log(EmailValidator.validate(email), 'isValid email');
     if (!isErrors) {

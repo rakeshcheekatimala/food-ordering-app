@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconButton, Menu, MenuItem, Typography } from '@material-ui/core';
 import { fade, makeStyles } from '@material-ui/core/styles';
-////import { userLogout } from './../../common/utils';
+import { logout } from './../../api';
 import { Link } from 'react-router-dom';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { getUserName } from './../../common/utils';
@@ -91,6 +91,7 @@ export default function ProfileDropdown(props) {
   const handleLogout = (event) => {
     event.preventDefault();
     props.userLogout(); // clear all the session token
+    logout();
     props.history.push('/'); // back to home
   };
 
