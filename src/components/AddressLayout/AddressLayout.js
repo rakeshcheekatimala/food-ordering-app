@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  Typography,
   GridListTile,
   Tabs,
   Tab,
@@ -8,8 +7,9 @@ import {
   GridList,
   withStyles,
 } from '@material-ui/core';
-import { getAllAddress } from './../../api';
+import { getAllAddress } from '../../api';
 import AddressCard from '../AddressCard/AddressCard';
+import NewAddress from "../NewAddress/NewAddress";
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -89,7 +89,7 @@ class AddressTabs extends Component {
                 <AddressCard
                   address={address}
                   key={address.id}
-                  active={addressSelected === address.id ? true : false}
+                  active={addressSelected === address.id}
                 />
               </GridListTile>
             );
@@ -118,7 +118,7 @@ class AddressTabs extends Component {
           </Tabs>
         </AppBar>
         {value === 0 && this.renderAddressCards()}
-        {value === 1 && <Typography>ADDRESS</Typography>}
+        {value === 1 && <NewAddress/>}
       </>
     );
   }
