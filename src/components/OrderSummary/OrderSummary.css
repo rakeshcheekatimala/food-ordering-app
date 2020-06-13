@@ -1,0 +1,16 @@
+.adjusticon {
+  font-size: 1rem;
+}
+
+.alignCenter {
+  display: flex;
+  align-items: center;
+}
+
+.ml15 {
+  margin-left: 1rem;
+}
+
+hr {
+  margin-right: 16px;
+}

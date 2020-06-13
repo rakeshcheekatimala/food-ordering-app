@@ -5,7 +5,14 @@ import {
   API_LOGIN,
   API_SIGNUP,
   API_RESTAURANT_DETAIL,
+  API_GET_ALLSTATES,
+  API_GET_ALLADDRESS,
+  API_LOGOUT,
+  API_PAYMENTS_OPTIONS,
+  API_SAVE_ORDER,
+  
 } from './constants';
+import { getUserToken } from './../common/utils';
 
 export const getRestaurantById = async (id) => {
   try {
@@ -32,7 +39,11 @@ export const login = async (payload) => {
   let api = `${API_LOGIN}`;
   try {
     let results = await axios.post(api, null, {
-      headers: { Authorization: 'Basic ' + payload },
+      headers: {
+        Authorization: 'Basic ' + payload,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
     });
     return results;
   } catch (e) {
@@ -54,6 +65,76 @@ export const registration = async (payload) => {
     let result = await axios.post(api, payload, config);
     return result;
   } catch (e) {
+    return e;
+  }
+};
+
+export const getAllStates = async () => {
+  let api = `${API_GET_ALLSTATES}`;
+  let results = await axios.get(api);
+  return results;
+};
+
+export const getAllAddress = async () => {
+  let token = getUserToken();
+  let api = `${API_GET_ALLADDRESS}`;
+  try {
+    let results = await axios.get(api, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return results;
+  } catch (e) {
+    return e;
+  }
+};
+
+export const logout = async () => {
+  let token = getUserToken();
+  let api = `${API_LOGOUT}`;
+  try {
+    let results = await axios.post(api, null, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return results;
+  } catch (e) {
+    return e;
+  }
+};
+
+export const getAllPayments = async () => {
+  try {
+    let api = `${API_PAYMENTS_OPTIONS}`;
+    let results = await axios.get(api);
+    return results;
+  } catch (e) {
+    return e;
+  }
+};
+
+export const saveOrder = async (payload) => {
+  try {
+    let token = getUserToken();
+    let api = `${API_SAVE_ORDER}`;
+
+    let results = await axios.post(api, payload, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    return results;
+  } catch (e) {
+    return e;
+  }
+};
+
+export const getPaymentMethods = async () => {
+  try{
+    let api=`${API_PAYMENTS_OPTIONS}`;
+    let result= await axios.get(api);
+    return result;
+  }catch(e){
     return e;
   }
 };

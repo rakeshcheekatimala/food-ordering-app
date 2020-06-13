@@ -16,7 +16,8 @@ import {
 } from '@material-ui/core';
 import './styles.css';
 import { v4 as uuidv4 } from 'uuid';
-
+import { withRouter } from 'react-router-dom';
+import { addSelectedItems, addRestaurantDetail } from './../../common/utils';
 import {
   Adjust as AdjustIcon,
   Remove as RemoveIcon,
@@ -151,7 +152,7 @@ class RestaurantDetail extends Component {
 
   onCheckout = (e) => {
     e.preventDefault();
-    let { qtyCount } = this.state;
+    let { qtyCount, totalAmount, restaurant } = this.state;
     // first condition to show the error message
     if (qtyCount === 0) {
       this.setState({
@@ -172,6 +173,15 @@ class RestaurantDetail extends Component {
         errorKey: uuidv4(),
         openSnackbar: true,
       });
+    }
+    if (isLoggedIn && qtyCount) {
+      addSelectedItems(this.state.selectedItems);
+      let restaurantSessionObj = {};
+      restaurantSessionObj.totalAmount = totalAmount;
+      restaurantSessionObj.id = restaurant.id;
+      restaurantSessionObj.name = restaurant.restaurant_name;
+      addRestaurantDetail(restaurantSessionObj);
+      this.props.history.push('/checkout'); // navigate to the checkout page
     }
   };
 
@@ -392,4 +402,4 @@ class RestaurantDetail extends Component {
   }
 }
 
-export default withStyles(useStyles)(RestaurantDetail);
+export default withStyles(useStyles)(withRouter(RestaurantDetail));
