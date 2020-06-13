@@ -14,10 +14,10 @@ import {
   Badge,
   withStyles,
 } from '@material-ui/core';
-import './styles.css';
+import './Detail.css';
 import { v4 as uuidv4 } from 'uuid';
 import { withRouter } from 'react-router-dom';
-import { addSelectedItems, addRestaurantDetail } from './../../common/utils';
+import { addSelectedItems, addRestaurantDetail } from '../../common/utils';
 import {
   Adjust as AdjustIcon,
   Remove as RemoveIcon,
@@ -25,9 +25,9 @@ import {
   Add as AddIcon,
   FiberManualRecord,
 } from '@material-ui/icons/';
-import { MessageSnackbar } from './../../components';
+import { MessageSnackbar } from '../../components';
 import joinClassNames from 'classnames';
-import { isUserLoggedIn } from './../../common/utils';
+import { isUserLoggedIn } from '../../common/utils';
 
 const useStyles = (theme) => ({
   qty: {
@@ -56,7 +56,7 @@ const useStyles = (theme) => ({
   },
 });
 
-class RestaurantDetail extends Component {
+class Detail extends Component {
   constructor() {
     super();
     this.state = {
@@ -402,4 +402,4 @@ class RestaurantDetail extends Component {
   }
 }
 
-export default withStyles(useStyles)(withRouter(RestaurantDetail));
+export default withStyles(useStyles)(withRouter(Detail));

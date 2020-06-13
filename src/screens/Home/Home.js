@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { RestaurantCard } from './../../components';
-import { filterRestaurantsByName, getAllRestaurants } from './../../api';
-import HeaderLayout from './../HeaderLayout';
+import { RestaurantCard } from '../../components';
+import { filterRestaurantsByName, getAllRestaurants } from '../../api';
+import HeaderLayout from '../HeaderLayout';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Grid, Container, withStyles, Typography } from '@material-ui/core';
