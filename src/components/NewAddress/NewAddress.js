@@ -7,7 +7,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import {withStyles} from "@material-ui/core/styles";
-import {saveAddress} from "../../api";
+import {getAllStates, saveAddress} from "../../api";
 
 const styles = theme => ({
   root: {
@@ -63,24 +63,12 @@ class NewAddress extends Component {
   /**
    * @description - Loading all states to fill details of new address
    */
-  getStates = () => {
-    let dataStates = null;
-    let xhrStates = new XMLHttpRequest();
-    let that = this;
-    xhrStates.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-        let data = JSON.parse(this.responseText).states;
-        console.log("states:", data);
-        that.setState({
-          states: data
-        });
-      }
+  getStates = async () => {
+    let {data} = await getAllStates();
+    this.setState({
+      states: data.states
     });
-
-    xhrStates.open("GET", "http://localhost:8080/api/states ");
-    xhrStates.setRequestHeader("Cache-Control", "no-cache");
-    xhrStates.send(dataStates);
-  }
+  };
 
   /**
    * @description - FlatNo change handler and update component state
