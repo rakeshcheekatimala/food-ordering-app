@@ -7,6 +7,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import {withStyles} from "@material-ui/core/styles";
+import {saveAddress} from "../../api";
 
 const styles = theme => ({
   root: {
@@ -157,22 +158,7 @@ class NewAddress extends Component {
       "state_uuid": this.state.newState
     });
 
-    // Rest call to add address
-    let xhrNewAddress = new XMLHttpRequest();
-    let that = this;
-    xhrNewAddress.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-        that.setState({
-          newAddressAdded: true
-        });
-      }
-    });
-
-    xhrNewAddress.open("POST", "http://localhost:8080/api/address");
-    xhrNewAddress.setRequestHeader("Authorization", "Bearer " + sessionStorage.getItem("access-token"));
-    xhrNewAddress.setRequestHeader("Content-Type", "application/json");
-    xhrNewAddress.setRequestHeader("Cache-Control", "no-cache");
-    xhrNewAddress.send(dataNewAddress);
+    saveAddress(dataNewAddress);
   }
 
   /**
