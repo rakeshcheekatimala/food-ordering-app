@@ -7,7 +7,6 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as EmailValidator from 'email-validator';
 import { isUserLoggedIn as userLoogedIn } from './../../common/utils';
-import {createMuiTheme } from '@material-ui/core';
 import {
   withStyles,
   Tabs,
