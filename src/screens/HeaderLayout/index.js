@@ -29,13 +29,15 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
+    zIndex: '2',
   },
 };
 
 const useStyles = (theme) => ({
   root: {
-    marginTop: '2rem',
-  },
+    marginTop: '2rem',  
+    },
+  
 });
 
 const TabContainer = function (props) {
@@ -344,6 +346,7 @@ class HeaderLayout extends Component {
         />
 
         <Modal
+          zIndex="modal"
           ariaHideApp={false}
           isOpen={this.state.modalIsOpen}
           contentLabel="Login"

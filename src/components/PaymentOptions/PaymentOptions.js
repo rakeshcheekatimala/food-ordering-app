@@ -50,9 +50,9 @@ class PaymentOptions extends Component {
 
   <FormControl component="fieldset">
   <FormLabel component="legend">Select Mode of Payment</FormLabel>
-  <RadioGroup aria-label="payment" name="payment1" value={this.state.value} onChange={this.handleChange}>
+  <RadioGroup aria-label="payment"  name="payment1" value={this.state.value} onChange={this.handleChange}>
   {this.state.paymentDetails && this.state.paymentDetails.map(payment =>
-    <FormControlLabel value={payment.payment_name} control={<Radio />} label={payment.payment_name} />
+    <FormControlLabel key={payment.id} value={payment.payment_name} control={<Radio />} label={payment.payment_name} />
 
   )
  }

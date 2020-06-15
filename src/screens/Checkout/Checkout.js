@@ -161,6 +161,8 @@ function Checkout() {
         </Grid>
         <Grid item xs={12} md={3} className={classes.ordersummary__container}>
           <OrderSummary
+           selectedAddress={checkout.selectedAddress.id}
+           selectedPaymentOption= {checkout.selectedPaymentOption.id}
             selectedItems={selectedItems}
             restaurant={selectedRestaurnt}
             onOrderClickHandler={onOrderClickHandler}

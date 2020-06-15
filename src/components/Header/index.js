@@ -1,15 +1,15 @@
 import React from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
 import ProfileDropdown from './../Dropdown';
 import PropTypes from 'prop-types';
+import Input from '@material-ui/core/Input';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -33,10 +33,12 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    //backgroundColor: fade(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+     // backgroundColor: fade(theme.palette.common.white, 0.25),
+      borderBottomColor: theme.palette.common.white,
     },
+
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
@@ -55,7 +57,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   inputRoot: {
-    color: 'inherit',
+   // color: 'inherit',
+   '&:after':{
+    borderBottom: '2px solid white',
+  },
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -102,15 +107,17 @@ export default function Header(props) {
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
-              <InputBase
-                placeholder="Search…"
+              <Input
+                placeholder="Search by Restaurant Name"
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
                 inputProps={{ 'aria-label': 'search' }}
                 onChange={props.onChangeHandler}
+                
               />
+     
             </div>
           ) : null}
           {isLoggedIn ? (
