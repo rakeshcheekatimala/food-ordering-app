@@ -70,9 +70,13 @@ export const registration = async (payload) => {
 };
 
 export const getAllStates = async () => {
-  let api = `${API_GET_ALLSTATES}`;
-  let results = await axios.get(api);
-  return results;
+  try {
+    let api = `${API_GET_ALLSTATES}`;
+    return await axios.get(api);
+  }
+  catch (e) {
+    return e;
+  }
 };
 
 export const getAllAddress = async () => {
@@ -104,8 +108,7 @@ export const logout = async () => {
 export const getAllPayments = async () => {
   try {
     let api = `${API_PAYMENTS_OPTIONS}`;
-    let results = await axios.get(api);
-    return results;
+    return await axios.get(api);
   } catch (e) {
     return e;
   }
@@ -116,14 +119,13 @@ export const saveOrder = async (payload) => {
     let token = getUserToken();
     let api = `${API_SAVE_ORDER}`;
 
-    let results = await axios.post(api, payload, {
+    return await axios.post(api, payload, {
       headers: {
         Authorization: 'Bearer ' + token,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
     });
-    return results;
   } catch (e) {
     return e;
   }
