@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     //backgroundColor: fade(theme.palette.common.white, 0.15),
     '&:hover': {
-     // backgroundColor: fade(theme.palette.common.white, 0.25),
+      // backgroundColor: fade(theme.palette.common.white, 0.25),
       borderBottomColor: theme.palette.common.white,
     },
 
@@ -57,10 +57,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   inputRoot: {
-   // color: 'inherit',
-   '&:after':{
-    borderBottom: '2px solid white',
-  },
+    // color: 'inherit',
+    '&:after': {
+      borderBottom: '2px solid white',
+    },
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -69,8 +69,9 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch',
+      width: '30ch',
     },
+    color: '#fff',
   },
   button: {
     color: '#222D32',
@@ -115,9 +116,7 @@ export default function Header(props) {
                 }}
                 inputProps={{ 'aria-label': 'search' }}
                 onChange={props.onChangeHandler}
-                
               />
-     
             </div>
           ) : null}
           {isLoggedIn ? (

@@ -46,11 +46,9 @@ class Home extends Component {
       this.setState({
         isLoading: true,
       });
-      let {
-        data: { restaurants },
-      } = await filterRestaurantsByName(e.target.value);
+      let { data } = await filterRestaurantsByName(e.target.value);
       this.setState({
-        restaurants,
+        restaurants: data.restaurants || [],
       });
       this.setState({
         isLoading: false,
