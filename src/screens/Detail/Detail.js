@@ -54,6 +54,9 @@ const useStyles = (theme) => ({
       marginRight: '20px',
     },
   },
+  badgeIndex: {
+    zIndex: 0,
+  },
 });
 
 class Detail extends Component {
@@ -279,6 +282,7 @@ class Detail extends Component {
                       <Badge
                         badgeContent={qtyCount ? qtyCount : '0'}
                         color="primary"
+                        className={classes.badgeIndex}
                       >
                         <ShoppingCartIcon />
                       </Badge>
