@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Home from './Home';
+import Home from './Home/Home';
 import Profile from './Profile';
-import RestaurantDetail from './RestaurantDetail';
+import RestaurantDetail from './Detail/Detail';
 import Checkout from './Checkout/Checkout';
 import PrivateRoute from './../common/PrivateRoute';
 

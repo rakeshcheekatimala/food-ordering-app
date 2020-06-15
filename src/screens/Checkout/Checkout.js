@@ -15,6 +15,7 @@ import {
 import { getSelectedItems, getRestaurantInfo } from './../../common/utils';
 import HeaderLayout from './../HeaderLayout';
 import { saveOrder } from './../../api';
+import { MessageSnackbar } from '../../components';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -43,7 +44,6 @@ function getStepContent(step, setCheckout, checkout) {
     });
   };
   const paymentHandler = (payment) => {
-    console.log(payment);
     setCheckout({
       ...checkout,
       selectedPaymentOption: payment[0],
@@ -77,13 +77,15 @@ function Checkout() {
   const [checkout, setCheckout] = React.useState({
     selectedAddress: { id: '' },
     selectedPaymentOption: { id: '', payment_name: '' },
+    openSnackbar: false,
+    orderItemSuccessful: false,
   }); // initial state
 
   const steps = getSteps();
   let selectedItems = getSelectedItems();
   selectedItems = new Map(Object.entries(selectedItems));
   let selectedRestaurnt = getRestaurantInfo();
-  console.log(selectedRestaurnt);
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -96,11 +98,9 @@ function Checkout() {
     setActiveStep(0);
   };
 
-  const onOrderClickHandler = () => {
-    console.log('inside oRderClick', checkout);
+  const onOrderClickHandler = async () => {
     let checkoutData = checkout;
     let itemList = [...selectedItems].map((item) => {
-      console.log(item, item);
       return {
         item_id: item[1].id,
         price: item[1].price,
@@ -114,7 +114,14 @@ function Checkout() {
       item_quantities: itemList,
       restaurant_id: selectedRestaurnt.id,
     };
-    saveOrder(JSON.stringify(payload));
+    let results = await saveOrder(JSON.stringify(payload));
+    if (results.data) {
+      setCheckout({
+        ...checkout,
+        openSnackbar: true,
+        orderItemSuccessful: true,
+      });
+    }
   };
 
   return (
@@ -169,6 +176,15 @@ function Checkout() {
             Change
           </Button>
         </Paper>
+      )}
+      {checkout.orderItemSuccessful && (
+        <MessageSnackbar
+          open={checkout.openSnackbar}
+          message="Order placed successfully"
+          onClose={() => {
+            setCheckout({ ...checkout, openSnackbar: false });
+          }}
+        />
       )}
     </div>
   );
