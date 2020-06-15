@@ -151,7 +151,7 @@ class RestaurantDetail extends Component {
   };
 
   onCheckout = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     let { qtyCount, totalAmount, restaurant } = this.state;
     // first condition to show the error message
     if (qtyCount === 0) {

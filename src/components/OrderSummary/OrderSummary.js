@@ -44,6 +44,9 @@ const OrderSummary = (props) => {
   } = props;
   const classes = useStyles();
 
+ const  isPlaceOrderDisabled=() =>  props.selectedPaymentOption==='' || props.selectedAddress ==='';
+    
+
   return (
     <>
       <Card className={classes.ordersummary}>
@@ -105,6 +108,7 @@ const OrderSummary = (props) => {
                           color="primary"
                           className={classes.fullwidth}
                           onClick={onOrderClickHandler}
+                          disabled={isPlaceOrderDisabled()}
                         >
                           PLACE ORDER
                         </Button>

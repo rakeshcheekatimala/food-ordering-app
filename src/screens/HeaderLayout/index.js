@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as EmailValidator from 'email-validator';
 import { isUserLoggedIn as userLoogedIn } from './../../common/utils';
+import {createMuiTheme } from '@material-ui/core';
 import {
   withStyles,
   Tabs,
@@ -29,13 +30,15 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
+    zIndex: '2',
   },
 };
 
 const useStyles = (theme) => ({
   root: {
-    marginTop: '2rem',
-  },
+    marginTop: '2rem',  
+    },
+  
 });
 
 const TabContainer = function (props) {
@@ -344,6 +347,7 @@ class HeaderLayout extends Component {
         />
 
         <Modal
+          zIndex="modal"
           ariaHideApp={false}
           isOpen={this.state.modalIsOpen}
           contentLabel="Login"
